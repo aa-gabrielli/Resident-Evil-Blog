@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -104,11 +103,11 @@
 </body>
 </html>
 
-/* Paleta solicitada: Preto, cinza, branco ocasional e vermelho sangue (#8A0303) */
-:root {
-    --bg-color: #04050B;
-    --blood-red: #8A0303;
-    --dark-gray: #1a1b20;
+    /* Paleta solicitada: Preto, cinza, branco ocasional e vermelho sangue (#8A0303) */
+ :root {
+      --bg-color: #04050B;
+       --blood-red: #8A0303;
+       --dark-gray: #1a1b20;
     --light-gray: #33343d;
     --text-white: #ffffff;
     --text-muted: #cccccc;
@@ -355,3 +354,69 @@ body {
     }
 }
 
+// Aguarda o carregamento do DOM
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // Elementos dos botões e contadores
+    const likeBtn = document.getElementById("likeBtn");
+    const dislikeBtn = document.getElementById("dislikeBtn");
+    const commentBtn = document.getElementById("commentBtn");
+    
+    const likeCountSpan = document.getElementById("likeCount");
+    const dislikeCountSpan = document.getElementById("dislikeCount");
+    const commentsDisplay = document.getElementById("commentsDisplay");
+
+    let likes = 0;
+    let dislikes = 0;
+
+    // Ação do botão Like
+    likeBtn.addEventListener("click", () => {
+        likes++;
+        likeCountSpan.textContent = likes;
+        
+        // Efeito rápido de clique
+        likeBtn.style.backgroundColor = "#8A0303";
+        setTimeout(() => {
+            likeBtn.style.backgroundColor = "";
+        }, 300);
+    });
+
+    // Ação do botão Dislike
+    dislikeBtn.addEventListener("click", () => {
+        dislikes++;
+        dislikeCountSpan.textContent = dislikes;
+
+        // Efeito rápido de clique
+        dislikeBtn.style.backgroundColor = "#000000";
+        setTimeout(() => {
+            dislikeBtn.style.backgroundColor = "";
+        }, 300);
+    });
+
+    // Ação do botão Comentar (utiliza um prompt retrô)
+    commentBtn.addEventListener("click", () => {
+        const commentText = prompt("Deixe seu scrap / comentário aqui miguxo(a):");
+        
+        // Valida se o usuário não deixou em branco ou cancelou
+        if (commentText && commentText.trim() !== "") {
+            // Cria um novo elemento de comentário na tela
+            const newComment = document.createElement("div");
+            newComment.classList.add("comment-item");
+            
+            // Texto formatado com a gíria e o comentário
+            newComment.innerHTML = `<strong>Anônimo_RE4_Fan:</strong> ${escapeHTML(commentText)}`;
+            
+            // Adiciona no topo da área de comentários
+            commentsDisplay.insertBefore(newComment, commentsDisplay.firstChild);
+        }
+    });
+
+    // Função auxiliar simples para evitar quebras por caracteres especiais (XSS básico)
+    function escapeHTML(str) {
+        return str.replace(/&/g, "&amp;")
+                  .replace(/</g, "&lt;")
+                  .replace(/>/g, "&gt;")
+                  .replace(/"/g, "&quot;")
+                  .replace(/'/g, "&#039;");
+    }
+});
